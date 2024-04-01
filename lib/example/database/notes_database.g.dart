@@ -85,7 +85,7 @@ class _$NotesDataBase extends NotesDataBase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `notes` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `color` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `notes` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `noteContent` TEXT NOT NULL, `color` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -109,8 +109,7 @@ class _$NotesDao extends NotesDao {
             'notes',
             (Note item) => <String, Object?>{
                   'id': item.id,
-                  'title': item.title,
-                  'description': item.description,
+                  'noteContent': item.noteContent,
                   'color': item.color.index
                 }),
         _noteUpdateAdapter = UpdateAdapter(
@@ -119,8 +118,7 @@ class _$NotesDao extends NotesDao {
             ['id'],
             (Note item) => <String, Object?>{
                   'id': item.id,
-                  'title': item.title,
-                  'description': item.description,
+                  'noteContent': item.noteContent,
                   'color': item.color.index
                 }),
         _noteDeletionAdapter = DeletionAdapter(
@@ -129,8 +127,7 @@ class _$NotesDao extends NotesDao {
             ['id'],
             (Note item) => <String, Object?>{
                   'id': item.id,
-                  'title': item.title,
-                  'description': item.description,
+                  'noteContent': item.noteContent,
                   'color': item.color.index
                 });
 
@@ -151,8 +148,7 @@ class _$NotesDao extends NotesDao {
     return _queryAdapter.queryList('SELECT * FROM notes',
         mapper: (Map<String, Object?> row) => Note(
             id: row['id'] as int,
-            title: row['title'] as String,
-            description: row['description'] as String,
+            noteContent: row['noteContent'] as String,
             color: ColorEnum.values[row['color'] as int]));
   }
 
@@ -166,8 +162,7 @@ class _$NotesDao extends NotesDao {
     return _queryAdapter.query('SELECT * FROM notes WHERE id = ?1',
         mapper: (Map<String, Object?> row) => Note(
             id: row['id'] as int,
-            title: row['title'] as String,
-            description: row['description'] as String,
+            noteContent: row['noteContent'] as String,
             color: ColorEnum.values[row['color'] as int]),
         arguments: [id]);
   }

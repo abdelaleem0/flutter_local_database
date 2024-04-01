@@ -6,13 +6,11 @@ import 'package:flutter_local_database/example/presentation/utils/constants.dart
 class Note {
   @PrimaryKey(autoGenerate: true)
   final int id;
-  final String title;
-  final String description;
+  final String noteContent;
   final ColorEnum color;
 
   Note(
       {required this.id,
-      required this.title,
-      required this.description,
+      required this.noteContent,
       required this.color});
 }

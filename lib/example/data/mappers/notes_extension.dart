@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_database/example/domain/entities/note_entity.dart';
 import 'package:flutter_local_database/example/database/entities/note.dart';
@@ -6,19 +8,17 @@ extension ConvertFromNoteToNoteEntity on Note {
   NoteEntity map() {
     return NoteEntity(
         id: id,
-        title: title,
-        description: description,
+        title: _decoding(noteContent)['title'],
+        description: _decoding(noteContent)['description'],
         color: color.name.map());
   }
 }
-
 
 extension ConvertFromNoteEntityToNote on NoteEntity {
   Note map() {
     return Note(
         id: id,
-        title: title,
-        description: description,
+        noteContent: _mapping(title, description).encoding,
         color: color.name.map());
   }
 }
@@ -60,4 +60,21 @@ extension GetColor on ColorEnum {
         return Colors.green;
     }
   }
+}
+
+extension Encoding on Map<String, dynamic> {
+  String get encoding {
+    return jsonEncode(this);
+  }
+}
+
+Map<String, dynamic> _decoding(String mapAsString) {
+  return jsonDecode(mapAsString);
+}
+
+Map<String, dynamic> _mapping(String title, String description) {
+  return {
+    "title": title,
+    "description": description,
+  };
 }
